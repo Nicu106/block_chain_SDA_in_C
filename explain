@@ -1,0 +1,77 @@
+Perfect, Nicu! Iată o explicație completă și clară atât despre cum funcționează codul tău,
+ cât și despre fundamentele blockchain-ului, adaptate exact pentru proiectul tău scris în C.
+
+⸻
+
+🧱 Ce este un Blockchain (pe scurt)
+
+Un blockchain este o listă legată de blocuri, unde fiecare bloc:
+	•	conține date,
+	•	are un hash unic,
+	•	și o legătură către hash-ul blocului anterior.
+
+📌 Asta asigură integritate: dacă cineva modifică un bloc, hash-ul se schimbă, iar lanțul devine invalid.
+
+⸻
+
+🔧 Ce face codul tău
+
+Aplicația ta este un simulator de blockchain în C. Ea face următoarele:
+
+🔹 1. Creează blocuri (când alegi opțiunea 1):
+	•	Primește text de la utilizator (data.txt).
+	•	Leagă acel bloc cu cel anterior (prev.txt).
+	•	Calculează hash-ul final (hash.txt) printr-un mecanism simplu de Proof-of-Work.
+
+🔹 2. Verifică integritatea lanțului (opțiunea 2):
+	•	Recitește fiecare prev.txt și îl compară cu hash.txt din blocul anterior.
+	•	Dacă se detectează un bloc modificat, se semnalează eroarea.
+
+⸻
+
+📁 De ce avem 3 fișiere în fiecare nod?
+
+Fiecare folder nodeX conține:
+
+- data.txt   -> mesajul propriu-zis al blocului
+- prev.txt   -> hash-ul blocului anterior (lanțul)
+- hash.txt   -> hash-ul calculat al acestui bloc
+
+🔍 Explicația detaliată:
+
+Fișier	Rol
+data.txt	Conține datele utilizatorului (ex: „transfer 50 monede de la A la B”)
+prev.txt	Conține hash-ul generat de blocul anterior – este veriga de lanț
+hash.txt	Hash-ul generat din data + prev + nonce → unic pentru fiecare bloc
+
+👉 Aceste 3 fișiere simulează structura reală a unui bloc dintr-un blockchain ca Bitcoin sau Ethereum, dar într-un mod educațional și vizibil.
+
+⸻
+
+🔐 Ce este Hash-ul?
+	•	Un hash este o amprentă digitală unică a unui mesaj.
+	•	Se folosește SHA-256: orice modificare (chiar și un spațiu) în data.txt → duce la un hash complet diferit în hash.txt.
+	•	Folosim această proprietate pentru a asigura integritatea lanțului.
+
+⸻
+
+🔄 Ce face „Proof of Work” în codul tău
+	•	Codul încearcă valori de nonce (un număr), până când hash-ul generat începe cu DIFFICULTY zerouri (000…).
+	•	Acest lucru face adăugarea unui bloc dificil, ca în blockchain-urile reale (ex: minarea Bitcoin).
+
+⸻
+
+🎯 De ce codul este util pentru teză:
+
+✔ Demonstrează:
+	•	algoritmi probabilistici (căutare nonce aleator),
+	•	integritate cu hash,
+	•	structura descentralizată (noduri = directoare separate),
+	•	implementare reală în C fără biblioteci complexe.
+
+✔ Poți chiar:
+	•	comprima bc_data/ ca dovadă a rulării,
+	•	prezenta codul cu capturi de ecran,
+	•	adăuga extensii: criptare, semnături digitale, algoritmi genetici etc.
+
+⸻
