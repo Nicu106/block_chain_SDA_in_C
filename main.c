@@ -176,4 +176,8 @@ int main() {
         }
     }
     return 0;
+
 }
+
+
+// teza de an 2025 SDA
