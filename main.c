@@ -4,6 +4,11 @@
  * Autor: Nicu & ChatGPT
  */
 
+// === Simularea unui Blockchain simplu în C ===
+// Fiecare bloc este salvat într-un folder individual
+// Fiecare bloc conține: data.txt, prev.txt, hash.txt
+// Hash-ul este generat prin SHA-256 și simulează Proof-of-Work
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,6 +20,8 @@
 #define DIFFICULTY 3 // Numărul de zerouri cerute la începutul hash-ului (Proof of Work)
 
 // ======= FUNCȚII UTILITARE ========
+
+// Generează hash-ul SHA-256 pentru un string dat (folosit pentru a securiza datele blocului)
 void sha256(const char *str, char outputBuffer[65]) {
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256_CTX sha256;
@@ -28,6 +35,8 @@ void sha256(const char *str, char outputBuffer[65]) {
     outputBuffer[64] = 0;
 }
 
+// Verifică dacă hash-ul generat începe cu un anumit număr de zerouri
+// (folosit pentru simularea unui mecanism de Proof-of-Work simplificat)
 int starts_with_zeros(char *hash, int zeros) {
     for (int i = 0; i < zeros; i++) {
         if (hash[i] != '0') return 0;
@@ -36,6 +45,9 @@ int starts_with_zeros(char *hash, int zeros) {
 }
 
 // ======= CREARE FOLDERE ȘI FIȘIERE =======
+
+// Creează directoarele pentru stocarea unui bloc (nod)
+// Format: bc_data/nodes/nodeX, unde X este numărul blocului
 void create_block_folder(int index) {
     struct stat st;
     if (stat("bc_data", &st) == -1) {
@@ -52,6 +64,7 @@ void create_block_folder(int index) {
     }
 }
 
+// Scrie un conținut text într-un fișier specificat
 void write_file(const char *filename, const char *content) {
     FILE *f = fopen(filename, "w");
     if (f) {
@@ -60,6 +73,8 @@ void write_file(const char *filename, const char *content) {
     }
 }
 
+// Citește o linie dintr-un fișier și o returnează
+// Este folosit pentru a obține hash-ul anterior și datele stocate
 char *read_file(const char *filename) {
     static char buffer[2048];
     FILE *f = fopen(filename, "r");
@@ -77,6 +92,11 @@ char *read_file(const char *filename) {
 }
 
 // ======= CREARE BLOC =======
+
+// Creează un bloc nou în blockchain:
+// - scrie datele în fișiere
+// - combină datele, hash-ul anterior și un nonce pentru a genera un nou hash valid
+// - salvează hash-ul într-un fișier
 void create_block(int index, const char *data, const char *prev_hash) {
     char dirname[64];
     sprintf(dirname, "bc_data/nodes/node%d", index);
@@ -108,6 +128,9 @@ void create_block(int index, const char *data, const char *prev_hash) {
 }
 
 // ======= VERIFICARE INTEGRITATE =======
+
+// Verifică dacă lanțul de blocuri este valid:
+// compară hash-ul anterior din fiecare bloc cu hash-ul generat al blocului precedent
 void check_chain(int last_index) {
     char prev_hash[65] = "";
     char current_path[128];
@@ -135,13 +158,15 @@ int main() {
     char data[256];
     char prev_hash[65] = "";
 
-    // Șterge fișierul 'bc_data' dacă există și nu este director
+    // Dacă există un fișier numit 'bc_data' care nu este director, îl șterge pentru a evita conflictele
     struct stat st;
     if (stat("bc_data", &st) == 0 && !S_ISDIR(st.st_mode)) {
         remove("bc_data");
     }
 
     while (1) {
+        // Meniu principal pentru interacțiunea cu utilizatorul
+        // Oferă opțiuni de adăugare blocuri și verificare a integrității
         printf("\n=== MINI BLOCKCHAIN C ===\n");
         printf("1. Adaugă block nou\n");
         printf("2. Verifică integritatea\n");
